@@ -8,13 +8,17 @@ public class Ball : MonoBehaviour {
     private bool isPressed;
 
     private float releaseDelay; // this is related to the period or how many times it swings in 1 sec
+    private float maxDragDist = 2f; // this should limit how far it can be dragged from the spring
+
     private Rigidbody2D rb; // make sure that you capitalize correctly
     private SpringJoint2D sj; // for the thing that is holding the ball from flying
+    private Rigidbody2D slingRb; // this related to the sling that will be holding the ball in place
 
     // this initiatilizes the different parts
     private void Awake(){
         rb = GetComponent<Rigidbody2D>();
         sj = GetComponent<SpringJoint2D>();
+        slingRb = sj.connectedBody; 
 
         releaseDelay = 1/ (sj.frequency * 4); // want it to be 1/4 of the period (essentially released when it passes the blue part)
     }
@@ -29,7 +33,17 @@ public class Ball : MonoBehaviour {
 
     private void DragBall(){
         Vector2 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition); // Converts the mouse position on screen to a point
-        rb.position = mousePosition; // That point is now the point of the object
+
+        float dist = Vector2.Distance(mousePosition,slingRb.position);// get the distance between when the bird is being dragged and the sling
+
+        // now compare to max dist
+        if(dist > maxDragDist){
+            // this assures that you cannot drag it past the length of the sling but still follows the mouse
+            Vector2 direction = (mousePosition - slingRb.position).normalized;
+            rb.position = slingRb.position + direction * maxDragDist;
+        } else {
+            rb.position = mousePosition; // That point is now the point of the object
+        }
     }
 
     /*

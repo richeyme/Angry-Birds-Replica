@@ -7,7 +7,7 @@ public class Ball : MonoBehaviour {
 
     private bool isPressed;
 
-    private float releaseDelay; // this is related to the period or how many times it swings in 1 sec
+    private float releaseDelay = .15f; // this is related to the period or how many times it swings in 1 sec
     private float maxDragDist = 2f; // this should limit how far it can be dragged from the spring
 
     private Rigidbody2D rb; // make sure that you capitalize correctly
@@ -20,7 +20,7 @@ public class Ball : MonoBehaviour {
         sj = GetComponent<SpringJoint2D>();
         slingRb = sj.connectedBody; 
 
-        releaseDelay = 1/ (sj.frequency * 4); // want it to be 1/4 of the period (essentially released when it passes the blue part)
+      //  releaseDelay = 1/ (sj.frequency * 4); // want it to be 1/4 of the period (essentially released when it passes the blue part)
     }
 
     // Update is called once per frame
@@ -34,7 +34,7 @@ public class Ball : MonoBehaviour {
     private void DragBall(){
         Vector2 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition); // Converts the mouse position on screen to a point
 
-        float dist = Vector2.Distance(mousePosition,slingRb.position);// get the distance between when the bird is being dragged and the sling
+        float dist = Vector3.Distance(mousePosition,slingRb.position);// get the distance between when the bird is being dragged and the sling
 
         // now compare to max dist
         if(dist > maxDragDist){
@@ -59,8 +59,8 @@ public class Ball : MonoBehaviour {
      */
     private void OnMouseUp(){
         isPressed = false;
-        rb.isKinematic = false; // should fall?
-        StartCoroutine(Release()); // calls the method but I want to look up exactly what this is referring to
+        rb.isKinematic = false; // should fall
+        StartCoroutine(Release()); // calls the method. Needs to be written this way because it is of type IEnumerator
     }
 
     // not sure what IEnumerated is, should look up

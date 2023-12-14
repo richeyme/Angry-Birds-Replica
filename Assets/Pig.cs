@@ -8,6 +8,8 @@ public class Pig : MonoBehaviour
     // This script is meant to track when the pig is touched in game
 
     public float health = 4f; // health of the pig
+
+    public GameObject deathEffect;
     void OnCollisionEnter2D(Collision2D colInfo){
         // rel vel is a 2d vector that compares the speed of one obj to another
         // mag is just like physics, combines both components to get a val
@@ -21,6 +23,7 @@ public class Pig : MonoBehaviour
     }
 
     void Die(){
+        Instantiate(deathEffect, transform.position, Quaternion.identity); // will start the particle effect when pig dies
         Destroy(gameObject); // will make the pig disappear from the game
     }
 

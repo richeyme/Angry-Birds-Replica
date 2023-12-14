@@ -39,6 +39,7 @@ public class Ball : MonoBehaviour {
         // now compare to max dist
         if(dist > maxDragDist){
             // this assures that you cannot drag it past the length of the sling but still follows the mouse
+            // doing sling - mouse would be the direct opposite
             Vector2 direction = (mousePosition - slingRb.position).normalized;
             rb.position = slingRb.position + direction * maxDragDist;
         } else {

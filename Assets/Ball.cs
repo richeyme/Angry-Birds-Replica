@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System; // for the comments
+using UnityEngine.SceneManagement; // used to restart the game
 
 public class Ball : MonoBehaviour {
 
@@ -13,6 +14,8 @@ public class Ball : MonoBehaviour {
     private Rigidbody2D rb; // make sure that you capitalize correctly
     private SpringJoint2D sj; // for the thing that is holding the ball from flying
     private Rigidbody2D slingRb; // this related to the sling that will be holding the ball in place
+
+    public GameObject nextBall;
 
     // this initiatilizes the different parts
     private void Awake(){
@@ -68,5 +71,16 @@ public class Ball : MonoBehaviour {
     private IEnumerator Release(){
         yield return new WaitForSeconds(releaseDelay);
         sj.enabled = false; //disables the joint so that it is released and lets ball fly away
+
+        yield return new WaitForSeconds(3f); // wait for three seconds before next ball is ready to launch
+
+        if(nextBall != null){
+            // "place" the new one. In reality the balls are already there but are inactive at the start
+            nextBall.SetActive(true);
+        } else{
+            // restart the game because you ran out of tries
+            Debug.Log("GAME OVER");
+            SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+        }
     }
 }

@@ -1,15 +1,22 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
 public class Pig : MonoBehaviour
 {
 
     // This script is meant to track when the pig is touched in game
 
     public float health = 4f; // health of the pig
-
     public GameObject deathEffect;
+    public static int PigsAlive = 0;
+
+
+    // Start is called before the first frame update
+    void Start()
+    {
+        PigsAlive++;
+    }
+
     void OnCollisionEnter2D(Collision2D colInfo){
         // rel vel is a 2d vector that compares the speed of one obj to another
         // mag is just like physics, combines both components to get a val
@@ -24,13 +31,15 @@ public class Pig : MonoBehaviour
 
     void Die(){
         Instantiate(deathEffect, transform.position, Quaternion.identity); // will start the particle effect when pig dies
-        Destroy(gameObject); // will make the pig disappear from the game
-    }
 
-    // Start is called before the first frame update
-    void Start()
-    {
+        PigsAlive--; // making sure that the pigs that are dying are being accounted for
         
+        // if we have killed all the pigs
+        if(PigsAlive <= 0){
+            Debug.Log("LEVEL WON!"); // just prints to the console
+        }
+
+        Destroy(gameObject); // will make the pig disappear from the game
     }
 
     // Update is called once per frame

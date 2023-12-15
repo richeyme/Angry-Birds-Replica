@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 public class Pig : MonoBehaviour
 {
@@ -9,6 +10,9 @@ public class Pig : MonoBehaviour
     public float health = 4f; // health of the pig
     public GameObject deathEffect;
     public static int PigsAlive = 0;
+
+    // for the win condition
+    public TextMeshProUGUI levelWon;
 
 
     // Start is called before the first frame update
@@ -36,6 +40,8 @@ public class Pig : MonoBehaviour
         
         // if we have killed all the pigs
         if(PigsAlive <= 0){
+            // pop up for the win should go in here
+            GetComponent<Canvas>().gameObject.SetActive(true); // will allow the text to appear once win condition met
             Debug.Log("LEVEL WON!"); // just prints to the console
         }
 
